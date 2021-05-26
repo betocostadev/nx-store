@@ -2,12 +2,23 @@
 // can give access to even the page <head>
 
 import Document, { Html, Head, NextScript, Main } from 'next/document';
+// This package is used to avoid conflicts for styled components in server vs local rendering
+import { ServerStyleSheet } from 'styled-components';
 
 export default class MyDocument extends Document {
+  static getInitialProps({ renderPage }) {
+    const sheet = new ServerStyleSheet();
+    const page = renderPage((App) => (props) =>
+      sheet.collectStyles(<App {...props} />)
+    );
+    const styleTags = sheet.getStyleElement();
+    return { ...page, styleTags };
+  }
+
   render() {
     return (
       <Html lang="en-US">
-        {/* <Head></Head> */}
+        <Head />
         <body>
           <Main />
           <NextScript />
