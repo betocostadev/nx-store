@@ -1,3 +1,5 @@
+import 'dotenv/config';
+
 import { createAuth } from '@keystone-next/auth';
 import { config, createSchema } from '@keystone-next/keystone/schema';
 import {
@@ -6,7 +8,9 @@ import {
 } from '@keystone-next/keystone/session';
 import { User } from './schemas/User';
 import { Product } from './schemas/Product';
-import 'dotenv/config';
+import { ProductImage } from './schemas/ProductImage';
+
+import { insertSeedData } from './seed-data';
 
 const databaseURL = process.env.DATABASE_URL || 'mongodb://localhost/nxsdb';
 
@@ -36,11 +40,17 @@ export default withAuth(
     db: {
       adapter: 'mongoose',
       url: databaseURL,
-      // add data seeding here
+      // add data seeding here - found in seed-data/index.ts
+      async onConnect(keystone) {
+        if (process.argv.includes('--seed-data')) {
+          await insertSeedData(keystone);
+        }
+      },
     },
     lists: createSchema({
       User,
       Product,
+      ProductImage,
       // schema items
     }),
     ui: {
