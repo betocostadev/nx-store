@@ -1,4 +1,3 @@
-import 'dotenv/config';
 import { createAuth } from '@keystone-next/auth';
 import { config, createSchema } from '@keystone-next/keystone/schema';
 import {
@@ -6,6 +5,8 @@ import {
   statelessSessions,
 } from '@keystone-next/keystone/session';
 import { User } from './schemas/User';
+import { Product } from './schemas/Product';
+import 'dotenv/config';
 
 const databaseURL = process.env.DATABASE_URL || 'mongodb://localhost/nxsdb';
 
@@ -39,6 +40,7 @@ export default withAuth(
     },
     lists: createSchema({
       User,
+      Product,
       // schema items
     }),
     ui: {
