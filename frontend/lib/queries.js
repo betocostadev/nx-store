@@ -46,6 +46,15 @@ export const ALL_PRODUCTS_QUERY = gql`
 
 // MUTATIONS
 
+export const DELETE_PRODUCT_MUTATION = gql`
+  mutation DELETE_PRODUCT_MUTATION($id: ID!) {
+    deleteProduct(id: $id) {
+      id
+      name
+    }
+  }
+`;
+
 export const UPDATE_PRODUCT_MUTATION = gql`
   mutation UPDATE_PRODUCT_MUTATION(
     $id: ID!

@@ -28,12 +28,6 @@ export default function UpdateProduct({ id }) {
         },
       },
     });
-    console.log(res);
-    // const res = await createProduct();
-    // clearForm();
-    // Router.push({
-    //   pathname: `/product/${res.data.createProduct.id}`,
-    // });
   }
 
   if (loading) return <p>Loading...</p>;
