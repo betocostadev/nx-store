@@ -1,5 +1,33 @@
 import { gql } from '@apollo/client';
 
+export const SINGLE_PRODUCT_QUERY = gql`
+  query SINGLE_PRODUCT_QUERY($id: ID!) {
+    Product(where: { id: $id }) {
+      id
+      name
+      price
+      description
+    }
+  }
+`;
+
+export const SINGLE_ITEM_QUERY = gql`
+  query SINGLE_ITEM_QUERY($id: ID!) {
+    Product(where: { id: $id }) {
+      name
+      price
+      description
+      id
+      photo {
+        altText
+        image {
+          publicUrlTransformed
+        }
+      }
+    }
+  }
+`;
+
 export const ALL_PRODUCTS_QUERY = gql`
   query ALL_PRODUCTS_QUERY {
     allProducts {
@@ -12,6 +40,27 @@ export const ALL_PRODUCTS_QUERY = gql`
           publicUrlTransformed
         }
       }
+    }
+  }
+`;
+
+// MUTATIONS
+
+export const UPDATE_PRODUCT_MUTATION = gql`
+  mutation UPDATE_PRODUCT_MUTATION(
+    $id: ID!
+    $name: String
+    $description: String
+    $price: Int
+  ) {
+    updateProduct(
+      id: $id
+      data: { name: $name, description: $description, price: $price }
+    ) {
+      id
+      name
+      description
+      price
     }
   }
 `;
