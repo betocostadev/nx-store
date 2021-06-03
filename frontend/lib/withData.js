@@ -5,6 +5,8 @@ import { createUploadLink } from 'apollo-upload-client';
 import withApollo from 'next-with-apollo';
 import { endpoint, prodEndpoint } from '../config';
 
+import paginationField from './paginationField';
+
 function createClient({ headers, initialState }) {
   return new ApolloClient({
     link: ApolloLink.from([
@@ -34,8 +36,8 @@ function createClient({ headers, initialState }) {
       typePolicies: {
         Query: {
           fields: {
-            // TODO: We will add this together!
-            // allProducts: paginationField(),
+            // Using this way we do our own management of the cache
+            allProducts: paginationField(),
           },
         },
       },

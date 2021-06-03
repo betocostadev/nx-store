@@ -1,5 +1,13 @@
 import { gql } from '@apollo/client';
 
+export const PAGINATION_QUERY = gql`
+  query PAGINATION_QUERY {
+    _allProductsMeta {
+      count
+    }
+  }
+`;
+
 export const SINGLE_PRODUCT_QUERY = gql`
   query SINGLE_PRODUCT_QUERY($id: ID!) {
     Product(where: { id: $id }) {
@@ -29,8 +37,8 @@ export const SINGLE_ITEM_QUERY = gql`
 `;
 
 export const ALL_PRODUCTS_QUERY = gql`
-  query ALL_PRODUCTS_QUERY {
-    allProducts {
+  query ALL_PRODUCTS_QUERY($skip: Int = 0, $first: Int) {
+    allProducts(first: $first, skip: $skip) {
       id
       name
       price
