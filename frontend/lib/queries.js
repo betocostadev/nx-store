@@ -1,5 +1,18 @@
 import { gql } from '@apollo/client';
 
+// authenticatedItem is a Union type
+export const CURRENT_USER_QUERY = gql`
+  query CURRENT_USER_QUERY {
+    authenticatedItem {
+      ... on User {
+        id
+        email
+        name
+      }
+    }
+  }
+`;
+
 export const PAGINATION_QUERY = gql`
   query PAGINATION_QUERY {
     _allProductsMeta {
@@ -53,6 +66,24 @@ export const ALL_PRODUCTS_QUERY = gql`
 `;
 
 // MUTATIONS
+
+export const SIGNIN_MUTATION = gql`
+  mutation SIGNIN_MUTATION($email: String!, $password: String!) {
+    authenticateUserWithPassword(email: $email, password: $password) {
+      ... on UserAuthenticationWithPasswordSuccess {
+        item {
+          id
+          email
+          name
+        }
+      }
+      ... on UserAuthenticationWithPasswordFailure {
+        code
+        message
+      }
+    }
+  }
+`;
 
 export const DELETE_PRODUCT_MUTATION = gql`
   mutation DELETE_PRODUCT_MUTATION($id: ID!) {
