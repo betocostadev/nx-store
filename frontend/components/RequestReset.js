@@ -4,14 +4,12 @@ import { REQUEST_RESET_MUTATION } from '../lib/queries';
 import Form from './styles/Form';
 import DisplayError from './ErrorMessage';
 
-export default function SignUp() {
+export default function RequestReset() {
   const { inputs, handleChange, resetForm } = useForm({
     email: '',
-    name: '',
-    password: '',
   });
 
-  const [signup, { data, error, loading }] = useMutation(
+  const [requestReset, { data, error, loading }] = useMutation(
     REQUEST_RESET_MUTATION,
     {
       variables: inputs,
@@ -21,34 +19,23 @@ export default function SignUp() {
 
   async function handleSubmit(e) {
     e.preventDefault();
-    await signup().catch(console.error);
+    await requestReset().catch(console.error);
 
     resetForm();
   }
 
   return (
     <Form method="POST" onSubmit={handleSubmit}>
-      <h2>Sign Up for an account</h2>
+      <h2>Request password reset</h2>
       {error && <DisplayError error={error} />}
 
       <fieldset>
-        {data && data.createUser ? (
+        {data && data.sendUserPasswordResetLink === null ? (
           <p>
-            Signed up successfully with the email {data.createUser.email}. Use
-            your credentials to Sign In
+            Password reset success! Please, check your e-mail for a link to
+            create your new password
           </p>
         ) : null}
-        <label htmlFor="name">
-          Name
-          <input
-            type="text"
-            name="name"
-            value={inputs.name}
-            onChange={handleChange}
-            placeholder="Your name"
-            autoComplete="name"
-          />
-        </label>
 
         <label htmlFor="email">
           Email
@@ -62,18 +49,7 @@ export default function SignUp() {
           />
         </label>
 
-        <label htmlFor="password">
-          Password
-          <input
-            type="password"
-            name="password"
-            value={inputs.password}
-            onChange={handleChange}
-            placeholder="Password"
-            autoComplete="password"
-          />
-        </label>
-        <button type="submit">Sign Up!</button>
+        <button type="submit">Request Reset!</button>
       </fieldset>
     </Form>
   );

@@ -67,6 +67,32 @@ export const ALL_PRODUCTS_QUERY = gql`
 
 // MUTATIONS
 
+export const RESET_MUTATION = gql`
+  mutation RESET_MUTATION(
+    $email: String!
+    $token: String!
+    $password: String!
+  ) {
+    redeemUserPasswordResetToken(
+      email: $email
+      token: $token
+      password: $password
+    ) {
+      message
+      code
+    }
+  }
+`;
+
+export const REQUEST_RESET_MUTATION = gql`
+  mutation REQUEST_RESET_MUTATION($email: String!) {
+    sendUserPasswordResetLink(email: $email) {
+      message
+      code
+    }
+  }
+`;
+
 export const SIGNUP_MUTATION = gql`
   mutation SIGNUP_MUTATION(
     $name: String!
