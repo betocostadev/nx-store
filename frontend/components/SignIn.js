@@ -1,7 +1,8 @@
 import { useMutation } from '@apollo/client';
-import Form from './styles/Form';
+import Router from 'next/router';
 import useForm from '../lib/useForm';
 import { CURRENT_USER_QUERY, SIGNIN_MUTATION } from '../lib/queries';
+import Form from './styles/Form';
 import DisplayError from './ErrorMessage';
 
 export default function SignIn() {
@@ -19,6 +20,9 @@ export default function SignIn() {
     e.preventDefault();
     await signIn();
     resetForm();
+    Router.push({
+      pathname: `/products/`,
+    });
   }
 
   const loginError =

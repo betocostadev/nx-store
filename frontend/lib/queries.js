@@ -67,6 +67,12 @@ export const ALL_PRODUCTS_QUERY = gql`
 
 // MUTATIONS
 
+export const SIGNOUT_MUTATION = gql`
+  mutation SIGNOUT_MUTATION {
+    endSession
+  }
+`;
+
 export const SIGNIN_MUTATION = gql`
   mutation SIGNIN_MUTATION($email: String!, $password: String!) {
     authenticateUserWithPassword(email: $email, password: $password) {
