@@ -1,8 +1,8 @@
 {
-  "name": "sick-fits-backend",
-  "version": "2.0.0",
+  "name": "nx-store-backend",
+  "version": "1.0.0",
   "private": true,
-  "author": "Wes Bos",
+  "author": "Wes Bos, Beto Costa",
   "license": "MIT",
   "scripts": {
     "dev": "keystone-next",
