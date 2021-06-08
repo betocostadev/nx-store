@@ -82,6 +82,14 @@ export const ALL_PRODUCTS_QUERY = gql`
 
 // MUTATIONS
 
+export const ADD_TO_CART_MUTATION = gql`
+  mutation ADD_TO_CART_MUTATION($id: ID!) {
+    addToCart(productId: $id) {
+      id
+    }
+  }
+`;
+
 export const RESET_MUTATION = gql`
   mutation RESET_MUTATION(
     $email: String!
