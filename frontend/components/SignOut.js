@@ -15,7 +15,11 @@ export default function SignOut() {
   }
 
   return (
-    <button type="button" onClick={handleSignOut}>
+    <button
+      style={{ color: 'var(--black)' }}
+      type="button"
+      onClick={handleSignOut}
+    >
       Sign Out
     </button>
   );
