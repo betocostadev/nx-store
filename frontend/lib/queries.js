@@ -1,5 +1,26 @@
 import { gql } from '@apollo/client';
 
+export const SEARCH_PRODUCTS_QUERY = gql`
+  query SEARCH_PRODUCTS_QUERY($searchTerm: String!) {
+    searchTerms: allProducts(
+      where: {
+        OR: [
+          { name_contains_i: $searchTerm }
+          { description_contains_i: $searchTerm }
+        ]
+      }
+    ) {
+      id
+      name
+      photo {
+        image {
+          publicUrlTransformed
+        }
+      }
+    }
+  }
+`;
+
 // authenticatedItem is a Union type
 export const CURRENT_USER_QUERY = gql`
   query CURRENT_USER_QUERY {
