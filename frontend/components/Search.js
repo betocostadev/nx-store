@@ -1,18 +1,19 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import { useLazyQuery } from '@apollo/client';
 import { resetIdCounter, useCombobox } from 'downshift';
+// eslint-disable-next-line import/no-extraneous-dependencies
 import { debounce } from 'lodash';
+import { useRouter } from 'next/router';
 
 import { SEARCH_PRODUCTS_QUERY } from '../lib/queries';
 import { DropDown, DropDownItem, SearchStyles } from './styles/DropDown';
 
 export default function Search() {
-  const [findItems, { loading, error, data }] = useLazyQuery(
-    SEARCH_PRODUCTS_QUERY,
-    {
-      fetchPolicy: 'no-cache',
-    }
-  );
+  const router = useRouter();
+
+  const [findItems, { loading, data }] = useLazyQuery(SEARCH_PRODUCTS_QUERY, {
+    fetchPolicy: 'no-cache',
+  });
 
   const items = data?.searchTerms || [];
 
@@ -22,6 +23,7 @@ export default function Search() {
   resetIdCounter();
 
   const {
+    isOpen,
     inputValue,
     getMenuProps,
     getInputProps,
@@ -37,9 +39,10 @@ export default function Search() {
         },
       });
     },
-    onSelectedItemChange() {
-      console.log('selected item change');
+    onSelectedItemChange({ selectedItem }) {
+      router.push(`/product/${selectedItem.id}`);
     },
+    itemToString: (item) => (item === null ? '' : item.name),
   });
 
   return (
@@ -55,20 +58,26 @@ export default function Search() {
         />
       </div>
       <DropDown {...getMenuProps()}>
-        {items.map((item, index) => (
-          <DropDownItem
-            key={item.id}
-            {...getItemProps({ item })}
-            highlighted={index === highlightedIndex}
-          >
-            <img
-              src={item.photo.image.publicUrlTransformed}
-              alt={item.name}
-              width="50px"
-            />
-            {item.name}
-          </DropDownItem>
-        ))}
+        {isOpen &&
+          items.map((item, index) => (
+            <DropDownItem
+              key={item.id}
+              className="search-item"
+              {...getItemProps({ item })}
+              highlighted={index === highlightedIndex}
+              onClick={() => router.push(`/product/${item.id}`)}
+            >
+              <img
+                src={item.photo.image.publicUrlTransformed}
+                alt={item.name}
+                width="50px"
+              />
+              {item.name}
+            </DropDownItem>
+          ))}
+        {isOpen && !items.length && !loading && (
+          <DropDownItem>Sorry no items found for {inputValue}</DropDownItem>
+        )}
       </DropDown>
     </SearchStyles>
   );

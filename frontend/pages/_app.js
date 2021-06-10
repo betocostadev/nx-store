@@ -12,6 +12,8 @@ import Nprogress from 'nprogress';
 // import 'nprogress/nprogress.css'; - NProgress default CSS
 import '../components/styles/nprogress.css';
 
+import '../components/styles/miscStyles.css';
+
 import withData from '../lib/withData';
 import { CartStateProvider } from '../lib/cartState';
 
