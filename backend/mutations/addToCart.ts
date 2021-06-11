@@ -3,7 +3,7 @@
 import { KeystoneContext } from '@keystone-next/types';
 import { CartItemCreateInput } from '../.keystone/schema-types';
 import { Session } from '../types';
-import { CartItem } from '../schemas/CartItem';
+import { CartItem } from '../schemas/CartItem'; // used below in context.lists.CartItem
 
 export default async function addToCart(
   root: any,
