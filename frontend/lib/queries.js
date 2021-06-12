@@ -103,6 +103,20 @@ export const ALL_PRODUCTS_QUERY = gql`
 
 // MUTATIONS
 
+export const CREATE_ORDER_MUTATION = gql`
+  mutation CREATE_ORDER_MUTATION($token: String!) {
+    checkout(token: $token) {
+      id
+      charge
+      total
+      items {
+        id
+        name
+      }
+    }
+  }
+`;
+
 export const REMOVE_FROM_CART_MUTATION = gql`
   mutation REMOVE_FROM_CART_MUTATION($id: ID!) {
     deleteCartItem(id: $id) {

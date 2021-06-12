@@ -52,7 +52,7 @@ export default async function checkout(
       `,
   });
 
-  const cartItems = user.cart.filter((CartItem) => CartItem.product);
+  const cartItems = user.cart.filter((cartItem) => cartItem.product);
 
   const amount = cartItems.reduce(
     (tally: number, cartItem: CartItemCreateInput) =>
@@ -71,4 +71,34 @@ export default async function checkout(
       console.log(err);
       throw new Error(err.message);
     });
+
+  console.log('charge');
+  console.log(charge);
+
+  const orderItems = cartItems.map((cartItem) => {
+    const orderItem = {
+      name: cartItem.product.name,
+      description: cartItem.product.description,
+      price: cartItem.product.price,
+      quantity: cartItem.quantity,
+      photo: { connect: { id: cartItem.product.photo.id } },
+    };
+    return orderItem;
+  });
+
+  const order = await context.lists.Order.createOne({
+    data: {
+      total: charge.amount,
+      charge: charge.id,
+      items: { create: orderItems },
+      user: { connect: { id: userId } },
+    },
+    resolveFields: false,
+  });
+
+  const cartItemIds = user.cart.map((cartItem) => cartItem.id);
+  await context.lists.CartItem.deleteMany({
+    ids: cartItemIds,
+  });
+  return order;
 }
