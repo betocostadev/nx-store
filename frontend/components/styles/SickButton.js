@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 
 const SickButton = styled.button`
+  cursor: pointer;
   background: var(--indigo700);
   color: white;
   font-weight: 500;
@@ -14,6 +15,7 @@ const SickButton = styled.button`
   transition: all 0.5s;
   &[disabled] {
     opacity: 0.5;
+    cursor: progress;
   }
 `;
 

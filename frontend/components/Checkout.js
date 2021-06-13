@@ -6,10 +6,12 @@ import {
   useStripe,
 } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
+import { useRouter } from 'next/router';
 import nProgress from 'nprogress';
 import { useState } from 'react';
 import styled from 'styled-components';
-import { CREATE_ORDER_MUTATION } from '../lib/queries';
+import { useCart } from '../lib/cartState';
+import { CREATE_ORDER_MUTATION, CURRENT_USER_QUERY } from '../lib/queries';
 import SickButton from './styles/SickButton';
 
 const CheckoutFormStyles = styled.form`
@@ -28,11 +30,14 @@ function CheckoutForm() {
   const [loading, setLoading] = useState(false);
 
   const [checkout, { error: graphQLError }] = useMutation(
-    CREATE_ORDER_MUTATION
+    CREATE_ORDER_MUTATION,
+    { refetchQueries: [{ query: CURRENT_USER_QUERY }] }
   );
 
   const stripe = useStripe();
   const elements = useElements();
+  const router = useRouter();
+  const { toggleCart } = useCart();
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -59,10 +64,17 @@ function CheckoutForm() {
       },
     });
 
-    console.log(order);
-
     setLoading(false);
     nProgress.done();
+
+    if (order) {
+      toggleCart();
+
+      router.push({
+        pathname: '/order/[id]',
+        query: { id: order.data.checkout.id },
+      });
+    }
   }
 
   return (
@@ -70,7 +82,7 @@ function CheckoutForm() {
       {error && <p style={{ fontSize: 14 }}>{error.message}</p>}
       {graphQLError && <p style={{ fontSize: 14 }}>{graphQLError.message}</p>}
       <CardElement />
-      <SickButton>Checkout now</SickButton>
+      <SickButton disabled={loading}>Checkout now</SickButton>
     </CheckoutFormStyles>
   );
 }
