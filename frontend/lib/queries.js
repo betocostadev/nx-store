@@ -1,5 +1,55 @@
 import { gql } from '@apollo/client';
 
+export const USER_ORDERS_QUERY = gql`
+  query USER_ORDERS_QUERY {
+    allOrders {
+      id
+      charge
+      total
+      user {
+        id
+      }
+      items {
+        id
+        name
+        description
+        price
+        quantity
+        photo {
+          image {
+            publicUrlTransformed
+          }
+        }
+      }
+    }
+  }
+`;
+
+export const SINGLE_ORDER_QUERY = gql`
+  query SINGLE_ORDER_QUERY($id: ID!) {
+    order: Order(where: { id: $id }) {
+      id
+      charge
+      total
+      user {
+        id
+      }
+      items {
+        id
+        name
+        description
+        price
+        quantity
+        photo {
+          image {
+            publicUrlTransformed
+          }
+        }
+      }
+    }
+  }
+`;
+
 export const SEARCH_PRODUCTS_QUERY = gql`
   query SEARCH_PRODUCTS_QUERY($searchTerm: String!) {
     searchTerms: allProducts(
