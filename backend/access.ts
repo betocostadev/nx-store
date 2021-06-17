@@ -24,9 +24,7 @@ export const permissions = {
 // Rule based permissions - based on booleans of filters of specific functions
 export const rules = {
   canManageProducts({ session }: ListAccessArgs) {
-    if (!isSignedIn({ session })) {
-      return false;
-    }
+    if (!isSignedIn({ session })) return false;
     // Check if can manage products (permission - manage ALL products), if not, check for products the user owns
     if (permissions.canManageProducts({ session })) {
       return true;
@@ -36,9 +34,8 @@ export const rules = {
   },
 
   canOrder({ session }: ListAccessArgs) {
-    if (!isSignedIn({ session })) {
-      return false;
-    }
+    if (!isSignedIn({ session })) return false;
+
     if (permissions.canManageCart({ session })) {
       return true;
     }
@@ -47,9 +44,8 @@ export const rules = {
   },
 
   canManageOrderItems({ session }: ListAccessArgs) {
-    if (!isSignedIn({ session })) {
-      return false;
-    }
+    if (!isSignedIn({ session })) return false;
+
     if (permissions.canManageCart({ session })) {
       return true;
     }
@@ -58,12 +54,21 @@ export const rules = {
   },
 
   canReadProducts({ session }: ListAccessArgs) {
-    if (!isSignedIn({ session })) {
-      return false;
-    }
+    if (!isSignedIn({ session })) return false;
+
     if (permissions.canManageProducts({ session })) {
       return true;
     }
     return { status: 'AVAILABLE' };
+  },
+
+  canManageUsers({ session }: ListAccessArgs) {
+    if (!isSignedIn({ session })) return false;
+
+    if (permissions.canManageUsers({ session })) {
+      return true;
+    }
+    // They may update themselves
+    return { id: session.itemId };
   },
 };
