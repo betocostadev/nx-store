@@ -1,3 +1,4 @@
+import Head from 'next/head';
 import styled from 'styled-components';
 import SignIn from '../components/SignIn';
 import SignUp from '../components/SignUp';
@@ -12,6 +13,9 @@ const GridStyles = styled.div`
 export default function SignInPage() {
   return (
     <GridStyles>
+      <Head>
+        <title>Nx store | Sign In</title>
+      </Head>
       <SignIn />
       <SignUp />
       <RequestReset />

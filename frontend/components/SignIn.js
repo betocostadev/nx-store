@@ -1,11 +1,13 @@
 import { useMutation } from '@apollo/client';
-import Router from 'next/router';
+import { useRouter } from 'next/router';
 import useForm from '../lib/useForm';
 import { CURRENT_USER_QUERY, SIGNIN_MUTATION } from '../lib/queries';
 import Form from './styles/Form';
 import DisplayError from './ErrorMessage';
 
 export default function SignIn() {
+  const router = useRouter();
+
   const { inputs, handleChange, resetForm } = useForm({
     email: '',
     password: '',
@@ -20,14 +22,16 @@ export default function SignIn() {
     e.preventDefault();
     await signIn();
     resetForm();
+  }
 
-    const loginSuccess =
-      data?.authenticateUserWithPassword?.__typename ===
-      'UserAuthenticationWithPasswordSuccess';
+  const loginSuccess =
+    data?.authenticateUserWithPassword?.__typename ===
+    'UserAuthenticationWithPasswordSuccess';
 
-    if (!error && !loading && loginSuccess) {
-      Router.push({
-        pathname: `/products/`,
+  if (loginSuccess) {
+    if (!error && !loading) {
+      router.push({
+        pathname: '/account',
       });
     }
   }
@@ -42,7 +46,9 @@ export default function SignIn() {
     <Form method="POST" onSubmit={handleSubmit}>
       <h2>Sign into your account</h2>
 
-      {loginError && <DisplayError error={loginError} />}
+      {loading && <p>Loading ...</p>}
+
+      {loginError && <DisplayError error={loginError || error} />}
 
       <fieldset>
         <label htmlFor="email">
